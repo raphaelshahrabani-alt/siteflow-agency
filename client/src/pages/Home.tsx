@@ -243,9 +243,11 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {/* Gallery Item 1 */}
             <div className="bg-muted rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <div className="aspect-video bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
-                <ImageIcon className="w-16 h-16 text-gray-500" />
-              </div>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663404278182/4Sr3CR2PWHJXiWjqTZL7Do/gallery-engine-restoration-before-after-Chot9TLFWZ7Qs8A7z3tRaJ.webp"
+                alt="Engine Restoration Before and After"
+                className="w-full h-full object-cover aspect-video"
+              />
               <div className="p-6">
                 <h3 className="font-georgia text-xl font-bold text-secondary mb-2">Engine Restoration</h3>
                 <p className="text-muted-foreground">Complete engine cleaning and restoration service</p>
@@ -254,9 +256,11 @@ export default function Home() {
 
             {/* Gallery Item 2 */}
             <div className="bg-muted rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <div className="aspect-video bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
-                <ImageIcon className="w-16 h-16 text-gray-500" />
-              </div>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663404278182/4Sr3CR2PWHJXiWjqTZL7Do/gallery-transmission-repair-before-after-cfbxCJbMWypCQTWiNFTRwS.webp"
+                alt="Transmission Repair Before and After"
+                className="w-full h-full object-cover aspect-video"
+              />
               <div className="p-6">
                 <h3 className="font-georgia text-xl font-bold text-secondary mb-2">Transmission Repair</h3>
                 <p className="text-muted-foreground">Professional transmission rebuild and testing</p>
@@ -265,9 +269,11 @@ export default function Home() {
 
             {/* Gallery Item 3 */}
             <div className="bg-muted rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <div className="aspect-video bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
-                <ImageIcon className="w-16 h-16 text-gray-500" />
-              </div>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663404278182/4Sr3CR2PWHJXiWjqTZL7Do/gallery-suspension-work-before-after-WCypftaQE4tWFVFHrwMHu3.webp"
+                alt="Suspension Work Before and After"
+                className="w-full h-full object-cover aspect-video"
+              />
               <div className="p-6">
                 <h3 className="font-georgia text-xl font-bold text-secondary mb-2">Suspension Work</h3>
                 <p className="text-muted-foreground">Complete suspension system overhaul</p>
@@ -276,9 +282,11 @@ export default function Home() {
 
             {/* Gallery Item 4 */}
             <div className="bg-muted rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <div className="aspect-video bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
-                <ImageIcon className="w-16 h-16 text-gray-500" />
-              </div>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663404278182/4Sr3CR2PWHJXiWjqTZL7Do/gallery-electrical-system-before-after-d5WZkfNCXVrroy9fiBaUoX.webp"
+                alt="Electrical System Before and After"
+                className="w-full h-full object-cover aspect-video"
+              />
               <div className="p-6">
                 <h3 className="font-georgia text-xl font-bold text-secondary mb-2">Electrical System</h3>
                 <p className="text-muted-foreground">Electrical diagnostics and repairs</p>
