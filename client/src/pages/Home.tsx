@@ -1,5 +1,9 @@
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Zap, DollarSign, Wrench, CheckCircle, Star, Phone, MapPin, Clock } from "lucide-react";
+import { Zap, DollarSign, Wrench, CheckCircle, Star, Phone, MapPin, Clock, Image as ImageIcon, DollarSign as PriceIcon } from "lucide-react";
+import { useState } from "react";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 /**
  * Industrial Minimalism Design System
@@ -9,6 +13,33 @@ import { Zap, DollarSign, Wrench, CheckCircle, Star, Phone, MapPin, Clock } from
  */
 
 export default function Home() {
+  const { user } = useAuth();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    vehicle: "",
+  });
+
+  const sendQuoteMutation = trpc.quotes.sendQuote.useMutation({
+    onSuccess: () => {
+      toast.success("Quote request sent! We'll contact you soon.");
+      setFormData({ name: "", email: "", phone: "", vehicle: "" });
+    },
+    onError: (error: any) => {
+      toast.error(error?.message || "Failed to send quote request");
+    },
+  });
+
+  const handleQuoteSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.phone) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+    sendQuoteMutation.mutate(formData);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
@@ -22,7 +53,8 @@ export default function Home() {
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a href="#services" className="text-secondary hover:text-accent transition-colors">Services</a>
-            <a href="#why-us" className="text-secondary hover:text-accent transition-colors">Why Us</a>
+            <a href="#pricing" className="text-secondary hover:text-accent transition-colors">Pricing</a>
+            <a href="#gallery" className="text-secondary hover:text-accent transition-colors">Gallery</a>
             <a href="#testimonials" className="text-secondary hover:text-accent transition-colors">Reviews</a>
             <a href="#contact" className="text-secondary hover:text-accent transition-colors">Contact</a>
           </div>
@@ -135,8 +167,136 @@ export default function Home() {
       {/* Geometric Accent Line */}
       <div className="h-1 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
 
+      {/* Pricing Section */}
+      <section id="pricing" className="py-20 md:py-32 bg-background">
+        <div className="container">
+          <div className="text-center mb-16">
+            <h2 className="font-georgia text-4xl md:text-5xl font-bold text-secondary mb-4">
+              Service Pricing
+            </h2>
+            <div className="w-24 h-1 bg-accent mx-auto"></div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b-2 border-accent">
+                  <th className="text-left py-4 px-6 font-georgia text-lg text-secondary">Service</th>
+                  <th className="text-left py-4 px-6 font-georgia text-lg text-secondary">Description</th>
+                  <th className="text-right py-4 px-6 font-georgia text-lg text-secondary">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-border hover:bg-white/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-secondary">Oil Change</td>
+                  <td className="py-4 px-6 text-muted-foreground">Standard oil change with filter replacement</td>
+                  <td className="py-4 px-6 text-right font-semibold text-accent">$49.99</td>
+                </tr>
+                <tr className="border-b border-border hover:bg-white/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-secondary">Brake Service</td>
+                  <td className="py-4 px-6 text-muted-foreground">Brake pad replacement and rotor inspection</td>
+                  <td className="py-4 px-6 text-right font-semibold text-accent">$129.99</td>
+                </tr>
+                <tr className="border-b border-border hover:bg-white/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-secondary">Tire Replacement</td>
+                  <td className="py-4 px-6 text-muted-foreground">Single tire replacement and balancing</td>
+                  <td className="py-4 px-6 text-right font-semibold text-accent">$89.99</td>
+                </tr>
+                <tr className="border-b border-border hover:bg-white/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-secondary">Tire Rotation</td>
+                  <td className="py-4 px-6 text-muted-foreground">Full tire rotation and balance</td>
+                  <td className="py-4 px-6 text-right font-semibold text-accent">$39.99</td>
+                </tr>
+                <tr className="border-b border-border hover:bg-white/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-secondary">Diagnostic</td>
+                  <td className="py-4 px-6 text-muted-foreground">Complete vehicle diagnostic scan</td>
+                  <td className="py-4 px-6 text-right font-semibold text-accent">$59.99</td>
+                </tr>
+                <tr className="hover:bg-white/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-secondary">Battery Replacement</td>
+                  <td className="py-4 px-6 text-muted-foreground">Battery replacement and installation</td>
+                  <td className="py-4 px-6 text-right font-semibold text-accent">$99.99</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-muted-foreground mb-6">*Prices may vary based on vehicle make and model. Contact us for a detailed quote.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Geometric Accent Line */}
+      <div className="h-1 bg-gradient-to-r from-accent to-transparent"></div>
+
+      {/* Gallery Section */}
+      <section id="gallery" className="py-20 md:py-32 bg-white">
+        <div className="container">
+          <div className="text-center mb-16">
+            <h2 className="font-georgia text-4xl md:text-5xl font-bold text-secondary mb-4">
+              Before & After Gallery
+            </h2>
+            <div className="w-24 h-1 bg-accent mx-auto"></div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Gallery Item 1 */}
+            <div className="bg-muted rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <div className="aspect-video bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                <ImageIcon className="w-16 h-16 text-gray-500" />
+              </div>
+              <div className="p-6">
+                <h3 className="font-georgia text-xl font-bold text-secondary mb-2">Engine Restoration</h3>
+                <p className="text-muted-foreground">Complete engine cleaning and restoration service</p>
+              </div>
+            </div>
+
+            {/* Gallery Item 2 */}
+            <div className="bg-muted rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <div className="aspect-video bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                <ImageIcon className="w-16 h-16 text-gray-500" />
+              </div>
+              <div className="p-6">
+                <h3 className="font-georgia text-xl font-bold text-secondary mb-2">Transmission Repair</h3>
+                <p className="text-muted-foreground">Professional transmission rebuild and testing</p>
+              </div>
+            </div>
+
+            {/* Gallery Item 3 */}
+            <div className="bg-muted rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <div className="aspect-video bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                <ImageIcon className="w-16 h-16 text-gray-500" />
+              </div>
+              <div className="p-6">
+                <h3 className="font-georgia text-xl font-bold text-secondary mb-2">Suspension Work</h3>
+                <p className="text-muted-foreground">Complete suspension system overhaul</p>
+              </div>
+            </div>
+
+            {/* Gallery Item 4 */}
+            <div className="bg-muted rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <div className="aspect-video bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                <ImageIcon className="w-16 h-16 text-gray-500" />
+              </div>
+              <div className="p-6">
+                <h3 className="font-georgia text-xl font-bold text-secondary mb-2">Electrical System</h3>
+                <p className="text-muted-foreground">Electrical diagnostics and repairs</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <p className="text-muted-foreground mb-6">Upload your own before & after photos to showcase your work!</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Geometric Accent Line */}
+      <div className="h-1 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+
       {/* Why Choose Us Section */}
-      <section id="why-us" className="py-20 md:py-32 bg-background">
+      <section className="py-20 md:py-32 bg-background">
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="font-georgia text-4xl md:text-5xl font-bold text-secondary mb-4">
@@ -310,29 +470,44 @@ export default function Home() {
 
             <div className="bg-white p-8 rounded-lg border border-border">
               <h3 className="font-georgia text-2xl font-bold text-secondary mb-6">Quick Quote</h3>
-              <form className="space-y-4">
+              <form onSubmit={handleQuoteSubmit} className="space-y-4">
                 <input
                   type="text"
                   placeholder="Your Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                  required
                 />
                 <input
                   type="email"
                   placeholder="Your Email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                  required
                 />
                 <input
                   type="tel"
                   placeholder="Your Phone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                  required
                 />
                 <textarea
                   placeholder="Tell us about your vehicle"
+                  value={formData.vehicle}
+                  onChange={(e) => setFormData({ ...formData, vehicle: e.target.value })}
                   rows={4}
                   className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                 ></textarea>
-                <Button className="w-full bg-accent hover:bg-orange-700 text-white py-3">
-                  Get Quote
+                <Button 
+                  type="submit"
+                  disabled={sendQuoteMutation.isPending}
+                  className="w-full bg-accent hover:bg-orange-700 text-white py-3"
+                >
+                  {sendQuoteMutation.isPending ? "Sending..." : "Get Quote"}
                 </Button>
               </form>
             </div>
@@ -352,9 +527,9 @@ export default function Home() {
               <h4 className="font-georgia text-lg font-bold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-white/80">
                 <li><a href="#services" className="hover:text-accent transition-colors">Services</a></li>
-                <li><a href="#why-us" className="hover:text-accent transition-colors">Why Us</a></li>
+                <li><a href="#pricing" className="hover:text-accent transition-colors">Pricing</a></li>
+                <li><a href="#gallery" className="hover:text-accent transition-colors">Gallery</a></li>
                 <li><a href="#testimonials" className="hover:text-accent transition-colors">Reviews</a></li>
-                <li><a href="#contact" className="hover:text-accent transition-colors">Contact</a></li>
               </ul>
             </div>
             <div>
