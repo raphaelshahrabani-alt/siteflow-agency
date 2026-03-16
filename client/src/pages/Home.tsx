@@ -34,55 +34,23 @@ const PORTFOLIO_ITEMS = [
 
 const PLANS = [
   {
-    name: "Starter",
-    price: 149,
-    description: "Perfect for solo service businesses just getting online",
+    name: "Professional Website",
+    setupFee: 500,
+    price: 50,
+    description: "Everything your business needs — built once, managed monthly",
     features: [
-      "5-page professional website",
-      "Mobile responsive design",
-      "Contact & quote form",
+      "Custom professional website design",
+      "Mobile responsive on all devices",
+      "Contact & quote request form",
       "Google Maps integration",
-      "Basic SEO setup",
-      "Monthly updates (1hr)",
-      "Email support",
-    ],
-    highlight: false,
-    priceId: "starter" as const,
-  },
-  {
-    name: "Growth",
-    price: 249,
-    description: "For established businesses ready to generate more leads",
-    features: [
-      "10-page professional website",
-      "Custom design & branding",
-      "Online booking / quote system",
-      "Before & after gallery",
-      "Google Reviews integration",
-      "Monthly updates (3hrs)",
-      "Priority support",
-      "Monthly performance report",
+      "SEO-ready structure",
+      "Monthly content updates",
+      "Hosting & security managed",
+      "Priority email & phone support",
+      "You own your domain & content",
     ],
     highlight: true,
-    priceId: "growth" as const,
-  },
-  {
-    name: "Premium",
-    price: 449,
-    description: "Full-service digital presence for serious business owners",
-    features: [
-      "Unlimited pages",
-      "Full custom design",
-      "E-commerce / payments",
-      "Blog & content management",
-      "Advanced SEO & analytics",
-      "Monthly updates (8hrs)",
-      "Dedicated account manager",
-      "Monthly strategy call",
-      "Social media integration",
-    ],
-    highlight: false,
-    priceId: "premium" as const,
+    priceId: "standard" as const,
   },
 ];
 
@@ -103,7 +71,7 @@ const FAQS = [
   { q: "How long does it take to build my website?", a: "Most websites are live within 5-7 business days after our discovery call. Complex projects with custom features may take 10-14 days." },
   { q: "Do I own my website?", a: "Yes, 100%. You own all the content, design, and domain. If you ever cancel, we hand everything over to you with no strings attached." },
   { q: "What's included in the monthly retainer?", a: "Monthly updates (text, photos, pricing), security monitoring, hosting management, performance optimization, and priority support. You never have to touch the backend." },
-  { q: "Can I upgrade my plan later?", a: "Absolutely. You can upgrade at any time and we'll prorate the difference. Many clients start on Starter and grow into Growth within 6 months." },
+  { q: "Can I cancel the monthly retainer?", a: "Yes, anytime — no contracts, no penalties. If you cancel, we hand over all your files, code, and domain. You keep everything you paid for." },
   { q: "What if I'm not happy with the design?", a: "We offer unlimited revisions during the build phase until you're 100% satisfied. Your approval is required before we go live." },
 ];
 
@@ -111,8 +79,8 @@ const SALES_STEPS = [
   { step: "Step 1 — Find the prospect", content: "Search Google for local businesses in your city with no website or a bad one (slow, ugly, not mobile-friendly). Call them or walk in." },
   { step: "Step 2 — The opener", content: "Say: 'Hi, I build websites for [industry] businesses in [city]. I noticed your site could use some work — I'd love to show you what we can do. Can I send you a quick example?'" },
   { step: "Step 3 — Send this page", content: "Share the link to this page. Let the portfolio, pricing, and testimonials do the talking. Most prospects will pick a plan themselves." },
-  { step: "Step 4 — Handle objections", content: "'Too expensive?' Reply: 'It's less than one new customer per month.' | 'Already have a site?' Reply: 'Let me show you what yours looks like on mobile.' | 'Need to think?' Reply: 'I only have one spot left this month.'" },
-  { step: "Step 5 — Close & collect", content: "Send them directly to the pricing section. They click, pay via card, and you get notified instantly. Start the discovery call within 24 hours." },
+  { step: "Step 4 — Handle objections", content: "'$500 is too much?' Reply: 'That's less than one new customer — and you'll get dozens.' | 'What about the $50/month?' Reply: 'That covers hosting, updates, and support. Less than a Netflix subscription.' | 'Already have a site?' Reply: 'Let me show you what yours looks like on mobile.' | 'Need to think?' Reply: 'I only take one new client per week.'" },
+  { step: "Step 5 — Close & collect", content: "Send them directly to the pricing section. They click, pay $500 setup + first month, and you get notified instantly. Start the discovery call within 24 hours." },
 ];
 
 export default function Home() {
@@ -147,7 +115,7 @@ export default function Home() {
     contactMutation.mutate(contactForm);
   };
 
-  const handleCheckout = (planId: "starter" | "growth" | "premium") => {
+  const handleCheckout = (planId: "standard") => {
     setSelectedPlan(planId);
     checkoutMutation.mutate({ planId, origin: window.location.origin });
   };
@@ -298,20 +266,31 @@ export default function Home() {
       <section id="pricing" className="py-24 max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-white/60 text-lg">Monthly retainer — cancel anytime, no contracts.</p>
+          <p className="text-white/60 text-lg">One price. No tiers. No surprises.</p>
         </div>
-        <div className="grid md:grid-cols-3 gap-8 items-start">
+        <div className="max-w-xl mx-auto">
           {PLANS.map((plan) => (
-            <div key={plan.name} className={`rounded-2xl border p-8 relative ${plan.highlight ? "bg-gradient-to-b from-blue-600/20 to-indigo-600/10 border-blue-500/50 shadow-xl shadow-blue-900/30" : "bg-white/5 border-white/10"}`}>
-              {plan.highlight && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">MOST POPULAR</div>
-              )}
-              <h3 className="text-xl font-bold mb-1">{plan.name}</h3>
-              <p className="text-white/50 text-sm mb-6">{plan.description}</p>
-              <div className="flex items-end gap-1 mb-8">
-                <span className="text-5xl font-extrabold">${plan.price}</span>
-                <span className="text-white/50 mb-1">/month</span>
+            <div key={plan.name} className="rounded-2xl border bg-gradient-to-b from-blue-600/20 to-indigo-600/10 border-blue-500/50 shadow-xl shadow-blue-900/30 p-10 relative">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">EVERYTHING INCLUDED</div>
+              <h3 className="text-2xl font-bold mb-1 text-center">{plan.name}</h3>
+              <p className="text-white/50 text-sm mb-8 text-center">{plan.description}</p>
+
+              {/* Pricing breakdown */}
+              <div className="flex flex-col sm:flex-row gap-6 mb-8 justify-center items-center">
+                <div className="text-center">
+                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">One-Time Setup</div>
+                  <div className="text-5xl font-extrabold">${plan.setupFee}</div>
+                </div>
+                <div className="text-white/30 text-3xl font-thin hidden sm:block">+</div>
+                <div className="text-center">
+                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Monthly Retainer</div>
+                  <div className="flex items-end gap-1 justify-center">
+                    <span className="text-5xl font-extrabold">${plan.price}</span>
+                    <span className="text-white/50 mb-1">/mo</span>
+                  </div>
+                </div>
               </div>
+
               <ul className="space-y-3 mb-8">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2 text-sm text-white/80">
@@ -323,14 +302,14 @@ export default function Home() {
               <Button
                 onClick={() => handleCheckout(plan.priceId)}
                 disabled={checkoutMutation.isPending && selectedPlan === plan.priceId}
-                className={`w-full py-5 font-semibold ${plan.highlight ? "bg-blue-600 hover:bg-blue-500 text-white" : "bg-white/10 hover:bg-white/20 text-white border border-white/20"}`}
+                className="w-full py-6 text-base font-semibold bg-blue-600 hover:bg-blue-500 text-white"
               >
-                {checkoutMutation.isPending && selectedPlan === plan.priceId ? "Loading..." : `Start ${plan.name} — $${plan.price}/mo`}
+                {checkoutMutation.isPending && selectedPlan === plan.priceId ? "Redirecting to checkout..." : `Get Started — $${plan.setupFee} + $${plan.price}/mo`}
               </Button>
             </div>
           ))}
         </div>
-        <p className="text-center text-white/40 text-sm mt-8">All plans include a one-time setup fee of $299 for new builds. Existing site migrations are free.</p>
+        <p className="text-center text-white/40 text-sm mt-8">Cancel the monthly retainer anytime. You always keep your website.</p>
       </section>
 
       {/* PROCESS */}

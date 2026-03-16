@@ -1,56 +1,23 @@
-// Stripe product and pricing definitions for SiteFlow Agency retainer plans.
-// These are used to create checkout sessions and display pricing on the frontend.
+// Stripe product and pricing definitions for SiteFlow Agency.
+// Single plan: $500 one-time setup fee + $50/month retainer.
 
 export const AGENCY_PLANS = {
-  starter: {
-    name: "Starter Plan",
-    description: "5-page professional website with monthly management",
-    price: 14900, // $149.00 in cents
+  standard: {
+    name: "Professional Website",
+    description: "Custom website build + fully managed monthly retainer",
+    price: 5000, // $50.00/month in cents
     interval: "month" as const,
-    setupFee: 29900, // $299.00 one-time setup fee
+    setupFee: 50000, // $500.00 one-time setup fee in cents
     features: [
-      "5-page professional website",
-      "Mobile responsive design",
-      "Contact & quote form",
+      "Custom professional website design",
+      "Mobile responsive on all devices",
+      "Contact & quote request form",
       "Google Maps integration",
-      "Basic SEO setup",
-      "Monthly updates (1hr)",
-      "Email support",
-    ],
-  },
-  growth: {
-    name: "Growth Plan",
-    description: "10-page website with booking system and monthly management",
-    price: 24900, // $249.00 in cents
-    interval: "month" as const,
-    setupFee: 29900,
-    features: [
-      "10-page professional website",
-      "Custom design & branding",
-      "Online booking / quote system",
-      "Before & after gallery",
-      "Google Reviews integration",
-      "Monthly updates (3hrs)",
-      "Priority support",
-      "Monthly performance report",
-    ],
-  },
-  premium: {
-    name: "Premium Plan",
-    description: "Unlimited pages with full-service digital presence",
-    price: 44900, // $449.00 in cents
-    interval: "month" as const,
-    setupFee: 29900,
-    features: [
-      "Unlimited pages",
-      "Full custom design",
-      "E-commerce / payments",
-      "Blog & content management",
-      "Advanced SEO & analytics",
-      "Monthly updates (8hrs)",
-      "Dedicated account manager",
-      "Monthly strategy call",
-      "Social media integration",
+      "SEO-ready structure",
+      "Monthly content updates",
+      "Hosting & security managed",
+      "Priority email & phone support",
+      "You own your domain & content",
     ],
   },
 } as const;

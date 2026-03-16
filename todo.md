@@ -89,3 +89,11 @@
 - All form validation handled with Zod schema validation
 - Responsive design tested across all major breakpoints
 - TypeScript strict mode enabled for type safety
+
+## Pricing Update
+- [x] Change to single plan: $500 one-time setup + $50/month retainer
+- [x] Update PLANS array in Home.tsx
+- [x] Update products.ts Stripe config
+- [x] Update agency router planId validation
+- [x] Update sales script section to reflect new pricing
+- [x] Verify TypeScript still passes (12 tests passing)

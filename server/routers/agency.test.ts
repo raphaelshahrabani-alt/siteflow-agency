@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { appRouter } from "../routers";
 import type { TrpcContext } from "../_core/context";
 
@@ -45,7 +45,7 @@ describe("agency.contact", () => {
       name: "Joe Smith",
       email: "joe@example.com",
       business: "Joe's Auto Shop",
-      message: "I'm interested in the Growth plan.",
+      message: "I'm interested in getting a website.",
     });
 
     expect(result).toEqual({ success: true });
@@ -77,12 +77,12 @@ describe("agency.contact", () => {
 });
 
 describe("agency.createCheckout", () => {
-  it("creates a checkout session for the starter plan", async () => {
+  it("creates a checkout session for the standard plan", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.agency.createCheckout({
-      planId: "starter",
+      planId: "standard",
       origin: "https://example.com",
     });
 
@@ -90,28 +90,17 @@ describe("agency.createCheckout", () => {
     expect(result.url).toContain("checkout.stripe.com");
   });
 
-  it("creates a checkout session for the growth plan", async () => {
+  it("returns a valid Stripe checkout URL", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.agency.createCheckout({
-      planId: "growth",
+      planId: "standard",
       origin: "https://example.com",
     });
 
-    expect(result).toHaveProperty("url");
-  });
-
-  it("creates a checkout session for the premium plan", async () => {
-    const ctx = createPublicContext();
-    const caller = appRouter.createCaller(ctx);
-
-    const result = await caller.agency.createCheckout({
-      planId: "premium",
-      origin: "https://example.com",
-    });
-
-    expect(result).toHaveProperty("url");
+    expect(typeof result.url).toBe("string");
+    expect(result.url!.startsWith("https://")).toBe(true);
   });
 
   it("rejects an invalid plan ID", async () => {
@@ -120,7 +109,7 @@ describe("agency.createCheckout", () => {
 
     await expect(
       caller.agency.createCheckout({
-        planId: "invalid" as "starter",
+        planId: "invalid" as "standard",
         origin: "https://example.com",
       })
     ).rejects.toThrow();

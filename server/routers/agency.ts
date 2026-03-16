@@ -2,7 +2,7 @@ import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
 import Stripe from "stripe";
 import { notifyOwner } from "../_core/notification";
-import { getPlan, PlanId } from "../products";
+import { getPlan } from "../products";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2026-02-25.clover",
@@ -32,11 +32,11 @@ export const agencyRouter = router({
       return { success: true };
     }),
 
-  // Create a Stripe Checkout Session for a monthly retainer plan
+  // Create a Stripe Checkout Session — $500 setup fee + $50/month retainer
   createCheckout: publicProcedure
     .input(
       z.object({
-        planId: z.enum(["starter", "growth", "premium"]),
+        planId: z.enum(["standard"]),
         origin: z.string().url(),
       })
     )
@@ -46,20 +46,30 @@ export const agencyRouter = router({
 
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
-        mode: "subscription",
+        mode: "payment",
         allow_promotion_codes: true,
         line_items: [
+          // One-time $500 setup fee
           {
             price_data: {
-              currency: "usd",
+              currency: "cad",
               product_data: {
-                name: plan.name,
-                description: plan.description,
+                name: "Website Setup Fee",
+                description: "One-time custom website build & design",
               },
-              unit_amount: plan.price,
-              recurring: {
-                interval: plan.interval,
+              unit_amount: plan.setupFee, // $500.00
+            },
+            quantity: 1,
+          },
+          // First month retainer ($50) billed upfront
+          {
+            price_data: {
+              currency: "cad",
+              product_data: {
+                name: "Monthly Retainer — First Month",
+                description: "Hosting, updates & support (first month)",
               },
+              unit_amount: plan.price, // $50.00
             },
             quantity: 1,
           },
@@ -67,6 +77,8 @@ export const agencyRouter = router({
         metadata: {
           plan_id: input.planId,
           plan_name: plan.name,
+          setup_fee: plan.setupFee.toString(),
+          monthly_retainer: plan.price.toString(),
         },
         client_reference_id: input.planId,
         success_url: `${input.origin}/payment-success?plan=${input.planId}&session_id={CHECKOUT_SESSION_ID}`,
