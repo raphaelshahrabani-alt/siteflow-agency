@@ -1,18 +1,26 @@
-# Auto Service Joe & Ralph - Project TODO
+# Web Agency Sales Page - Project TODO
 
-## Core Website Features
+## Core Features
 
-### Phase 1: Initial Website Build
-- [x] Create responsive navigation with logo and menu items
-- [x] Design and implement hero banner with gradient background
-- [x] Build services section with three main services (Oil Change, Brake Service, Tire Replacement)
-- [x] Create "Why Choose Us" section with feature cards
-- [x] Implement customer testimonials section with star ratings
-- [x] Build contact section with business information
-- [x] Create footer with quick links and contact info
-- [x] Apply Industrial Minimalism design system (warm orange accents, charcoal text, Georgia serif)
-- [x] Generate high-quality service images using AI
-- [x] Ensure responsive design across all screen sizes
+- [x] Initialize project with backend capabilities
+- [x] Generate hero background and portfolio preview images
+- [x] Build full agency sales landing page (Home.tsx)
+- [x] Add navigation with smooth scroll
+- [x] Hero section with headline and CTA
+- [x] Portfolio/niche showcase section (auto, restaurant, salon, etc.)
+- [x] Pricing/retainer plans section (3 tiers)
+- [x] How it works / process section
+- [x] Sales guide and objection handling section
+- [x] Testimonials/social proof section
+- [x] Contact / get started form
+- [x] Footer with links and contact info
+- [x] Integrate Stripe for monthly retainer payments
+- [x] Create Stripe checkout session router
+- [x] Build payment success and cancel pages
+- [x] Add client onboarding flow after payment
+- [x] Write vitest tests for payment router (13 tests passing)
+- [x] TypeScript check passes with zero errors
+- [x] Save final checkpoint
 
 ### Phase 2: Backend Infrastructure
 - [x] Upgrade project to web-db-user template with backend capabilities
