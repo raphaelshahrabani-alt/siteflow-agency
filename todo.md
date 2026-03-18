@@ -97,3 +97,11 @@
 - [x] Update agency router planId validation
 - [x] Update sales script section to reflect new pricing
 - [x] Verify TypeScript still passes (12 tests passing)
+
+## Vercel Deployment
+- [x] Add vercel.json routing config
+- [x] Create api/index.ts serverless entry point
+- [x] Update package.json build script for Vercel
+- [x] Ensure DB works with PlanetScale (serverless-compatible MySQL)
+- [x] TypeScript check passes (zero errors)
+- [x] Package and deliver with deployment guide
